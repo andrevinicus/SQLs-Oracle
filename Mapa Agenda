@@ -1,0 +1,13 @@
+select 	 	 to_char(hr_inicio, 'hh24:mi') ||' às '||
+		 to_char((hr_inicio + (NR_MINUTO_DURACAO/1440)), 'hh24:mi') ds_horario, 
+		 nvl(substr(obter_nome_pf(cd_pessoa_fisica),1,180), '') nm_paciente,
+		 substr(ds_observacao,1,180) ds_observacao,
+		 substr(obter_convenio_agenda(cd_pessoa_fisica,'D'),1,130) nm_convenio,
+		 obter_prontuario_paciente(cd_pessoa_fisica) nr_same, dt_agendamento,
+		 substr(obter_descricao_procedimento(cd_procedimento,''),1,180) ds_procedimento,
+		 DT_AGENDA, 
+		 NM_USUARIO_ORIG 
+from		 agenda_paciente
+where	DT_AGENDA BETWEEN :dt_inicial AND fim_dia(:dt_final)
+and		 cd_agenda = :cd_agenda
+ORDER BY DT_AGENDA, ds_horario
